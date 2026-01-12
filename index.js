@@ -74,6 +74,17 @@ const server = http.createServer(
           res.end("Bad Request: Invalid JSON");
         }
       });
+    } else if (method === "DELETE" && url.startsWith("/grades/")) {
+      // findIndex retorna a posição do elemento no array ou -1 se não encontrar
+      const gradeIndex = grades.findIndex((g) => g.id === id);
+      if (gradeIndex !== -1) {
+        grades.splice(gradeIndex, 1);
+        res.writeHead(204);
+        res.end();
+      } else {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Grade not found");
+      }
     } else {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.end("Route not Found");
